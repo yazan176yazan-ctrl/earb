@@ -1,106 +1,67 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Map button / tab text -> local HTML file
   const routes = {
-    // Main / home
-    "EXARAI": "EXARAI.html",
-    "Home": "EXARAI.html",
+    // main tabs
     "AI-Tools": "EXARAI.html",
     "AI Tools": "EXARAI.html",
-    "AI-TOOLS": "EXARAI.html",
-
-    // AI sections
-    "AI Chat": "AI Chat.html",
-    "AI Power": "AI Power.html",
-    "Midjourney": "Midjourney.html",
-
-    // Wallet / assets
-    "My Assets": "My Assets.html",
-    "Assets": "My Assets.html",
-    "My Team": "My Team.html",
-    "My Works": "My Works.html",
-    "Bills": "Bills.html",
-    "Swap": "Swap.html",
-
-    // Recharge / withdraw
-    "Deposit": "Recharge Now.html",
-    "Recharge": "Recharge Now.html",
-    "Recharge Now": "Recharge Now.html",
-    "Withdraw": "Withdraw Now.html",
-    "Withdraw Now": "Withdraw Now.html",
-
-    // Tools hub (لو بقي له استخدام آخر)
+    "Home": "EXARAI.html",
     "Tool": "Tool.html",
-
-    // Tasks / room
-    "Lucky draw": "Lucky draw.html",
-    "Lucky Draw": "Lucky draw.html",
-    "Task Center": "Task Center.html",
-    "Room task": "Room task.html",
-    "Room Task": "Room task.html",
-
-    // User / account
     "Member": "Member.html",
-    "Mine": "Account Information.html",
-    "My": "Account Information.html",
-    "Account Information": "Account Information.html",
-    "Security Center": "Security Center.html",
 
-    // Messages / settings / info
-    "Site message": "Site message.html",
-    "Site Message": "Site message.html",
-    "Choose Language": "Choose Language.html",
-    "Switch Language": "Choose Language.html",
-    "Theme": "Theme.html",
-
-    // Help / docs
-    "Help Center": "Help Center.html",
-    "Service Agreement": "Service Agreement.html",
-    "Privacy Agreement": "Privacy Agreement.html",
-    "About Us": "About Us.html",
-
-    // Auth
+    // auth
     "Log In": "Log In.html",
     "Login": "Log In.html",
     "Sign Up": "Sign Up.html",
     "Register": "Sign Up.html",
 
-    // Team / invite
-    "Invite Friends": "Invite Friends.html",
+    // wallet / assets
+    "My Assets": "My Assets.html",
+    "My Team": "My Team.html",
+    "My Works": "My Works.html",
+    "Bills": "Bills.html",
+    "Swap": "Swap.html",
+    "Lucky draw": "Lucky draw.html",
+    "Lucky Draw": "Lucky draw.html",
+    "Task Center": "Task Center.html",
+    "Room task": "Room task.html",
+    "Room Task": "Room task.html",
+    "Recharge Now": "Recharge Now.html",
+    "Withdraw Now": "Withdraw Now.html",
 
-    // Forum / content
-    "Content": "Content.html",
-    "Forum": "Content.html",
-    "forum": "Content.html"
+    // profile / settings
+    "Account Information": "Account Information.html",
+    "Security Center": "Security Center.html",
+    "Site message": "Site message.html",
+    "Site Message": "Site message.html",
+    "Help Center": "Help Center.html",
+    "Service Agreement": "Service Agreement.html",
+    "Privacy Agreement": "Privacy Agreement.html",
+    "About Us": "About Us.html",
+    "Invite Friends": "Invite Friends.html",
+    "Choose Language": "Choose Language.html",
+    "Theme": "Theme.html",
+
+    // tools page items
+    "Midjourney": "Midjourney.html",
+    "AI Chat": "AI Chat.html",
+    "AI Power": "AI Power.html"
   };
 
   function normalize(text) {
-    return (text || "").replace(/\s+/g, " ").trim();
+    return text.replace(/\s+/g, " ").trim();
   }
 
   function wireElement(el, target) {
     if (!el || !target) return;
-
-    // Pick a clickable ancestor (li / a / button / div)
-    let targetEl = el.closest('a, button, li, div') || el;
-
-    // Avoid rebinding same element
-    if (targetEl.dataset && targetEl.dataset.navBound === "1") return;
-
-    // Keep existing anchor behaviour if it already has href
-    if (targetEl.tagName === "A" && targetEl.getAttribute("href")) {
-      return;
-    }
-
-    try { targetEl.style.cursor = "pointer"; } catch (e) {}
-
-    targetEl.dataset.navBound = "1";
-    targetEl.addEventListener("click", function () {
+    el.style.cursor = "pointer";
+    el.addEventListener("click", function (ev) {
+      // لو العنصر هو <a> وعنده href جاهز ما بنلمسه
+      if (el.tagName === "A" && el.getAttribute("href")) return;
       window.location.href = target;
     });
   }
 
   const candidates = Array.from(
-    document.querySelectorAll("a, button, div, span, li, p")
+    document.querySelectorAll("a, button, div, span, li")
   );
 
   candidates.forEach(function (el) {
