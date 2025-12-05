@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     "Log In": "index.html",
     "Login": "index.html",
 
-    // main tabs on mobile
+    // bottom tabs
     "AI-Tools": "index.html",
     "AI Tools": "index.html",
     "Tool": "Tool.html",
@@ -43,10 +43,11 @@ document.addEventListener('DOMContentLoaded', function () {
     "Choose Language": "Choose Language.html",
     "Theme": "Theme.html",
 
-    // AI tools list
+    // AI tools entries
     "Midjourney": "Midjourney.html",
     "AI Chat": "AI Chat.html",
-    "AI Power": "AI Power.html"
+    "AI Power": "AI Power.html",
+    "Content": "Content.html"
   };
 
   function normalize(text) {
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function wireElement(el, target) {
     if (!el || !target) return;
     el.style.cursor = "pointer";
-    el.addEventListener("click", function () {
+    el.addEventListener("click", function (ev) {
       if (el.tagName === "A" && el.getAttribute("href")) return;
       window.location.href = target;
     });
