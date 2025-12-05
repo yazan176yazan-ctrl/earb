@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Map button / tab text -> local HTML file
+  // خريطة التنقل: نص الزر -> صفحة HTML
   const routes = {
     // Main / home
     "EXARAI": "EXARAI.html",
@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Wallet / assets
     "My Assets": "My Assets.html",
+    "Assets": "My Assets.html",
+
     "My Team": "My Team.html",
     "My Works": "My Works.html",
     "Bills": "Bills.html",
@@ -76,17 +78,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function wireElement(el, target) {
     if (!el || !target) return;
+
+    // حاول نربط أقرب عنصر كليكي (li, a, button, div)
+    let targetEl = el.closest('a, button, li, div');
+    if (!targetEl) targetEl = el;
+
+    // لا نكرر الربط على نفس العنصر
+    if (targetEl.dataset && targetEl.dataset.navBound === "1") return;
+    if (targetEl.tagName === "A" && targetEl.getAttribute("href")) {
+      // عنده href شغال أصلاً
+      return;
+    }
+
     try {
-      el.style.cursor = "pointer";
+      targetEl.style.cursor = "pointer";
     } catch (e) {}
-    el.addEventListener("click", function (ev) {
-      // إذا كان الرابط A وعنده href أصلاً، لا نغيّر سلوكه
-      if (el.tagName === "A" && el.getAttribute("href")) return;
+
+    targetEl.dataset.navBound = "1";
+    targetEl.addEventListener("click", function (ev) {
       window.location.href = target;
     });
   }
 
-  // نجرب على كل العناصر اللي ممكن تكون أزرار
+  // جرّب على كل العناصر اللي ممكن تكون أزرار أو عناصر قائمة
   const candidates = Array.from(
     document.querySelectorAll("a, button, div, span, li, p")
   );
@@ -94,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
   candidates.forEach(function (el) {
     const txt = normalize(el.textContent || "");
     if (!txt) return;
-    if (routes.hasOwnProperty(txt)) {
+    if (Object.prototype.hasOwnProperty.call(routes, txt)) {
       wireElement(el, routes[txt]);
     }
   });
