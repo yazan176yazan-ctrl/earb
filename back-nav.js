@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // الهدف: تفعيل سهم الرجوع في أعلى كل صفحة
   const backAreas = document.querySelectorAll('.van-nav-bar__left');
 
   function goBack() {
@@ -7,9 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
       window.history.back();
       return;
     }
-    // ما في تاريخ؟ نرجع حسب نوع الصفحة
     const path = window.location.pathname.toLowerCase();
     if (path.includes('tool.html')) {
+      window.location.href = 'My Assets.html';
+    } else if (path.includes('my assets.html')) {
       window.location.href = 'index.html';
     } else if (path.includes('member.html') ||
                path.includes('account information.html') ||
