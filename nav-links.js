@@ -1,15 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
   const routes = {
-    // main tabs
-    "AI-Tools": "EXARAI.html",
-    "AI Tools": "EXARAI.html",
-    "Home": "EXARAI.html",
+    // main entry
+    "EXARAI": "index.html",
+    "Home": "index.html",
+    "Log In": "index.html",
+    "Login": "index.html",
+
+    // main tabs on mobile
+    "AI-Tools": "index.html",
+    "AI Tools": "index.html",
     "Tool": "Tool.html",
     "Member": "Member.html",
 
     // auth
-    "Log In": "Log In.html",
-    "Login": "Log In.html",
     "Sign Up": "Sign Up.html",
     "Register": "Sign Up.html",
 
@@ -40,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
     "Choose Language": "Choose Language.html",
     "Theme": "Theme.html",
 
-    // tools page items
+    // AI tools list
     "Midjourney": "Midjourney.html",
     "AI Chat": "AI Chat.html",
     "AI Power": "AI Power.html"
@@ -53,8 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function wireElement(el, target) {
     if (!el || !target) return;
     el.style.cursor = "pointer";
-    el.addEventListener("click", function (ev) {
-      // لو العنصر هو <a> وعنده href جاهز ما بنلمسه
+    el.addEventListener("click", function () {
       if (el.tagName === "A" && el.getAttribute("href")) return;
       window.location.href = target;
     });
