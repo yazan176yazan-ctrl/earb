@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   function normalize(text) {
-    return text.replace(/\s+/g, " ").trim();
+    return (text || "").replace(/\s+/g, " ").trim();
   }
 
   function wireElement(el, target) {
@@ -85,8 +85,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // لا نكرر الربط على نفس العنصر
     if (targetEl.dataset && targetEl.dataset.navBound === "1") return;
+
+    // لو هو <a> وعنده href شغال، نتركه بحاله
     if (targetEl.tagName === "A" && targetEl.getAttribute("href")) {
-      // عنده href شغال أصلاً
       return;
     }
 
@@ -95,21 +96,34 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (e) {}
 
     targetEl.dataset.navBound = "1";
-    targetEl.addEventListener("click", function (ev) {
+    targetEl.addEventListener("click", function () {
       window.location.href = target;
     });
   }
 
-  // جرّب على كل العناصر اللي ممكن تكون أزرار أو عناصر قائمة
+  // 1) الربط عن طريق النص داخل العناصر
   const candidates = Array.from(
     document.querySelectorAll("a, button, div, span, li, p")
   );
 
   candidates.forEach(function (el) {
-    const txt = normalize(el.textContent || "");
+    const txt = normalize(el.textContent);
     if (!txt) return;
     if (Object.prototype.hasOwnProperty.call(routes, txt)) {
       wireElement(el, routes[txt]);
+    }
+  });
+
+  // 2) الربط عن طريق value (مثلاً input أو button بقيمة Withdraw)
+  const valueCandidates = Array.from(
+    document.querySelectorAll("input, button")
+  );
+
+  valueCandidates.forEach(function (el) {
+    const val = normalize(el.value);
+    if (!val) return;
+    if (Object.prototype.hasOwnProperty.call(routes, val)) {
+      wireElement(el, routes[val]);
     }
   });
 });
