@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Wallet / assets
     "My Assets": "My Assets.html",
     "Assets": "My Assets.html",
-
     "My Team": "My Team.html",
     "My Works": "My Works.html",
     "Bills": "Bills.html",
     "Swap": "Swap.html",
 
     // Recharge / withdraw
+    "Deposit": "Recharge Now.html",
     "Recharge": "Recharge Now.html",
     "Recharge Now": "Recharge Now.html",
     "Withdraw": "Withdraw Now.html",
@@ -79,14 +79,13 @@ document.addEventListener('DOMContentLoaded', function () {
   function wireElement(el, target) {
     if (!el || !target) return;
 
-    // حاول نربط أقرب عنصر كليكي (li, a, button, div)
-    let targetEl = el.closest('a, button, li, div');
-    if (!targetEl) targetEl = el;
+    // نختار أقرب عنصر مناسب للنقر
+    let targetEl = el.closest('a, button, li, div') || el;
 
     // لا نكرر الربط على نفس العنصر
     if (targetEl.dataset && targetEl.dataset.navBound === "1") return;
 
-    // لو هو <a> وعنده href شغال، نتركه بحاله
+    // لو هو <a> وعنده href فعّال، نتركه بحاله
     if (targetEl.tagName === "A" && targetEl.getAttribute("href")) {
       return;
     }
@@ -101,29 +100,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 1) الربط عن طريق النص داخل العناصر
   const candidates = Array.from(
     document.querySelectorAll("a, button, div, span, li, p")
   );
 
   candidates.forEach(function (el) {
-    const txt = normalize(el.textContent);
+    const txt = normalize(el.textContent || "");
     if (!txt) return;
     if (Object.prototype.hasOwnProperty.call(routes, txt)) {
       wireElement(el, routes[txt]);
-    }
-  });
-
-  // 2) الربط عن طريق value (مثلاً input أو button بقيمة Withdraw)
-  const valueCandidates = Array.from(
-    document.querySelectorAll("input, button")
-  );
-
-  valueCandidates.forEach(function (el) {
-    const val = normalize(el.value);
-    if (!val) return;
-    if (Object.prototype.hasOwnProperty.call(routes, val)) {
-      wireElement(el, routes[val]);
     }
   });
 });
