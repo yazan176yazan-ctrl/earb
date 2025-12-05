@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // خريطة التنقل: نص الزر -> صفحة HTML
+  // Map button / tab text -> local HTML file
   const routes = {
     // Main / home
     "EXARAI": "EXARAI.html",
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     "Withdraw": "Withdraw Now.html",
     "Withdraw Now": "Withdraw Now.html",
 
-    // Tools hub
+    // Tools hub (لو بقي له استخدام آخر)
     "Tool": "Tool.html",
 
     // Tasks / room
@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
     "Site message": "Site message.html",
     "Site Message": "Site message.html",
     "Choose Language": "Choose Language.html",
+    "Switch Language": "Choose Language.html",
     "Theme": "Theme.html",
 
     // Help / docs
@@ -79,20 +80,18 @@ document.addEventListener('DOMContentLoaded', function () {
   function wireElement(el, target) {
     if (!el || !target) return;
 
-    // نختار أقرب عنصر مناسب للنقر
+    // Pick a clickable ancestor (li / a / button / div)
     let targetEl = el.closest('a, button, li, div') || el;
 
-    // لا نكرر الربط على نفس العنصر
+    // Avoid rebinding same element
     if (targetEl.dataset && targetEl.dataset.navBound === "1") return;
 
-    // لو هو <a> وعنده href فعّال، نتركه بحاله
+    // Keep existing anchor behaviour if it already has href
     if (targetEl.tagName === "A" && targetEl.getAttribute("href")) {
       return;
     }
 
-    try {
-      targetEl.style.cursor = "pointer";
-    } catch (e) {}
+    try { targetEl.style.cursor = "pointer"; } catch (e) {}
 
     targetEl.dataset.navBound = "1";
     targetEl.addEventListener("click", function () {
